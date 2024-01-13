@@ -31,14 +31,19 @@ nav a.router-link-exact-active {
 <script>
 import axios from "axios";
 export default {
-  created() {
-    axios.get('logged')
-        .then((response) => {
-          console.log('Data:', response.data);
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
+  methods: {
+    async fetchData() {
+      await axios.get('logged')
+          .then((response) => {
+            console.log('Data:', response.data);
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+    }
+  },
+  mounted() {
+    this.fetchData()
   }
 }
 
