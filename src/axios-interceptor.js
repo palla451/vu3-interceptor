@@ -4,7 +4,6 @@ import router from "@/router";
 
 // Configura Axios
 axios.defaults.baseURL = process.env.VUE_APP_BASE_URI;
-console.log(process.env.VUE_APP_BASE_URI)
 
 // Interceptor di richiesta
 axios.interceptors.request.use(
