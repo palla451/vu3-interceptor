@@ -28,3 +28,18 @@ nav a.router-link-exact-active {
   color: #42b983;
 }
 </style>
+<script>
+import axios from "axios";
+export default {
+  created() {
+    axios.get('logged')
+        .then((response) => {
+          console.log('Data:', response.data);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+  }
+}
+
+</script>
