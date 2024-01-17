@@ -6,17 +6,13 @@ import router from "@/router";
 axios.defaults.baseURL = process.env.VUE_APP_BASE_URI;
 
 // Interceptor di richiesta
+// Interceptor di richiesta
 axios.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('token');
         if (token) {
             console.log('Token:', token);
-            router.push('/');
-            config.headers.Authorization = `Bearer ${token}`;
-        } else {
-            console.error('Token non presente. Utente non autorizzato.');
-            router.push('about');
-            return Promise.reject(new Error('Utente non autorizzato'));
+            config.headers.Authorization = 'Bearer ' +  token;
         }
 
         return config;
@@ -34,10 +30,30 @@ axios.interceptors.response.use(
         return response;
     },
     (error) => {
-        console.error('Response Interceptor Error:', error);
+        if (error.response) {
+            const status = error.response.status;
+            if (status === 401) {
+                // Errore di autenticazione (non autorizzato), cancella il token e reindirizza
+                console.error('Token scaduto o non valido');
+                localStorage.removeItem('token');
+                router.push('/login');
+            } else if (status === 403) {
+                // Altri errori di autorizzazione, gestisci come necessario
+                console.error('Accesso vietato');
+                router.push('/error');
+            } else {
+                // Gestisci altri errori come desiderato
+                console.error('Response Interceptor Error:', error);
+            }
+        } else {
+            // Gestisci altri tipi di errori come desiderato
+            console.error('Response Interceptor Error:', error);
+        }
+
         return Promise.reject(error);
     }
 );
+
 
 // Esporta l'istanza di axios con gli interceptor configurati
 export const axiosInstance = axios;
