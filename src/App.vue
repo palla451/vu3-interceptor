@@ -40,14 +40,12 @@ export default {
     }
   },
   mounted() {
-    if (this.$route.fullPath !== '/login') {
-      console.log(this.$route);
+    const currentRoute = window.location.pathname;
+    // Salvare il percorso corrente nello store Vuex
+    this.$store.commit('setCurrentRoute', currentRoute);
+    if (currentRoute !== '/login')
       this.fetchData();
-    }else {
-      console.log('non faccio la chiamata');
-    }
   }
-
 }
 </script>
 

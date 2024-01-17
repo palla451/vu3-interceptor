@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    currentRoute: '/',
+    currentRoute: window.location.pathname,
   },
   getters: {
   },
